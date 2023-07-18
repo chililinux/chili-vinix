@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+mkdir -p /mnt/vinix
+mount -o loop vinix.img /mnt/vinix
+cd filesystem
+find . | cpio -H newc -o | gzip -9 > ../rootfs.cpio.gz
+cd ..
+cp bzImage rootfs.cpio.gz syslinux.cfg *.c32 /mnt/vinix/
+sync
+sync
+void-runimage -b vinix.img
+
